@@ -1,0 +1,164 @@
+/*
+ Theme Name:   BlazeX Child
+ Theme URI:    https://blazextech.com
+ Description:  BlazeX Tech child theme for Blocksy
+ Author:       BlazeX Tech
+ Template:     blocksy
+ Version:      1.0.0
+*/
+
+/* ============================================
+   BLAZEX TECH — CUSTOM CSS
+   Apply in: WordPress Customizer → Additional CSS
+   OR enqueue via child theme
+   ============================================ */
+
+/* ---- Root Variables ---- */
+:root {
+  --blazex-orange:  #E8570E;
+  --blazex-amber:   #F4A024;
+  --blazex-dark:    #1C2333;
+  --blazex-navy:    #2E3A50;
+  --blazex-silver:  #C8CDD6;
+  --blazex-light:   #F5F6F8;
+  --blazex-white:   #FFFFFF;
+}
+
+/* ---- Buttons ---- */
+.wp-block-button__link,
+.ct-button,
+.woocommerce a.button,
+.woocommerce button.button {
+  background-color: var(--blazex-orange) !important;
+  border-color: var(--blazex-orange) !important;
+  border-radius: 6px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  transition: background 0.2s ease !important;
+}
+
+.wp-block-button__link:hover,
+.ct-button:hover,
+.woocommerce a.button:hover {
+  background-color: var(--blazex-amber) !important;
+  border-color: var(--blazex-amber) !important;
+}
+
+/* ---- Header ---- */
+.ct-header {
+  background-color: var(--blazex-dark) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+.ct-header .menu-item a {
+  color: var(--blazex-silver) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+}
+
+.ct-header .menu-item a:hover {
+  color: var(--blazex-white) !important;
+}
+
+/* ---- Footer ---- */
+.ct-footer {
+  background-color: var(--blazex-dark) !important;
+}
+
+.ct-footer-widgets {
+  color: var(--blazex-silver) !important;
+}
+
+/* ---- Links ---- */
+a {
+  color: var(--blazex-orange);
+}
+
+a:hover {
+  color: var(--blazex-amber);
+}
+
+/* ---- WhatsApp sticky button ---- */
+.blazex-whatsapp-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+  text-decoration: none;
+  transition: transform 0.2s;
+}
+
+.blazex-whatsapp-btn:hover {
+  transform: scale(1.08);
+}
+
+.blazex-whatsapp-btn svg {
+  width: 28px;
+  height: 28px;
+  fill: #fff;
+}
+
+/* ---- WooCommerce Packages ---- */
+.woocommerce .price {
+  color: var(--blazex-orange) !important;
+  font-size: 28px !important;
+  font-weight: 900 !important;
+}
+
+.woocommerce-cart .cart-collaterals .cart_totals {
+  border: 1px solid var(--blazex-orange);
+  border-radius: 8px;
+}
+
+/* ---- Elementor overrides ---- */
+.elementor-widget-heading .elementor-heading-title {
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* ---- Section spacing ---- */
+.blazex-section {
+  padding: 80px 0;
+}
+
+/* ---- Service cards ---- */
+.blazex-service-card {
+  background: #fff;
+  border: 1px solid #e2e5ea;
+  border-radius: 10px;
+  padding: 24px;
+  transition: border-color 0.2s;
+}
+
+.blazex-service-card:hover {
+  border-color: var(--blazex-orange);
+}
+
+/* ---- Testimonial ---- */
+.blazex-testimonial {
+  background: var(--blazex-dark);
+  border-radius: 12px;
+  padding: 32px;
+  color: var(--blazex-white);
+}
+
+/* ---- Mobile responsive ---- */
+@media (max-width: 768px) {
+  .blazex-section {
+    padding: 48px 0;
+  }
+
+  .blazex-whatsapp-btn {
+    bottom: 16px;
+    right: 16px;
+    width: 48px;
+    height: 48px;
+  }
+}

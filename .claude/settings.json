@@ -1,0 +1,32 @@
+{
+  "model": "claude-sonnet-4-6",
+  "context": {
+    "autoLoadFiles": ["CLAUDE.md", "SKILL.md"],
+    "alwaysInclude": ["CLAUDE.md"]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(git:*)",
+      "Bash(node:*)",
+      "Bash(php:*)",
+      "Bash(wp:*)",
+      "Bash(curl:*)",
+      "Read(**)",
+      "Write(src/**)",
+      "Write(docs/**)",
+      "Write(assets/**)",
+      "Write(.claude/**)"
+    ],
+    "deny": [
+      "Bash(rm -rf /)",
+      "Bash(sudo rm:*)"
+    ]
+  },
+  "tools": {
+    "filesystem": true,
+    "github": true,
+    "search": true
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "name": "BlazeX — Lead Capture → WhatsApp Alert",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "blazex-lead",
+        "responseMode": "onReceived",
+        "responseData": "allEntries"
+      },
+      "name": "Webhook (WPForms)",
+      "type": "n8n-nodes-base.webhook",
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "name",
+              "value": "={{$json[\"field_1\"]}}"
+            },
+            {
+              "name": "email",
+              "value": "={{$json[\"field_2\"]}}"
+            },
+            {
+              "name": "service",
+              "value": "={{$json[\"field_3\"]}}"
+            },
+            {
+              "name": "budget",
+              "value": "={{$json[\"field_4\"]}}"
+            },
+            {
+              "name": "message",
+              "value": "🔥 *New BlazeX Lead!*\n\n👤 Name: {{$json[\"field_1\"]}}\n📧 Email: {{$json[\"field_2\"]}}\n🛠 Service: {{$json[\"field_3\"]}}\n💰 Budget: {{$json[\"field_4\"]}}\n\n⏰ Reply within 24h!"
+            }
+          ]
+        }
+      },
+      "name": "Format Message",
+      "type": "n8n-nodes-base.set",
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://graph.facebook.com/v17.0/YOUR_PHONE_NUMBER_ID/messages",
+        "authentication": "predefinedCredentialType",
+        "method": "POST",
+        "jsonParameters": true,
+        "bodyParametersJson": "{\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"923XXXXXXXXXX\",\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": \"={{$json[\\\"message\\\"]}}\"\n  }\n}",
+        "headerParametersUi": {
+          "parameter": [
+            {
+              "name": "Authorization",
+              "value": "Bearer YOUR_WHATSAPP_TOKEN"
+            }
+          ]
+        }
+      },
+      "name": "Send WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "sheetId": "YOUR_GOOGLE_SHEET_ID",
+        "range": "Leads!A:E",
+        "valueInputMode": "RAW",
+        "values": {
+          "values": [
+            [
+              "={{$now}}",
+              "={{$node[\"Format Message\"].json[\"name\"]}}",
+              "={{$node[\"Format Message\"].json[\"email\"]}}",
+              "={{$node[\"Format Message\"].json[\"service\"]}}",
+              "={{$node[\"Format Message\"].json[\"budget\"]}}"
+            ]
+          ]
+        }
+      },
+      "name": "Save to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "position": [680, 460]
+    }
+  ],
+  "connections": {
+    "Webhook (WPForms)": {
+      "main": [[{"node": "Format Message", "type": "main", "index": 0}]]
+    },
+    "Format Message": {
+      "main": [
+        [
+          {"node": "Send WhatsApp", "type": "main", "index": 0},
+          {"node": "Save to Google Sheets", "type": "main", "index": 0}
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
