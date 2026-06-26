@@ -6,6 +6,9 @@
 - Based in Multan, Pakistan
 - Company: **BlazeX Tech** | Domain: blazextech.com
 
+## Contact Details
+- WhatsApp: +92 347 3407764
+
 ## Company Services
 1. Web Development (WordPress, WooCommerce, Shopify)
 2. Digital Marketing (Meta Ads, social media management)
@@ -62,6 +65,7 @@ blazextech.com/
 | WPForms Lite | Contact form | Free |
 | Rank Math SEO | SEO + sitemap | Free |
 | Smush | Image compression | Free |
+| Easy Code Manager (FluentSnippets) | Custom CSS/JS/PHP snippets (e.g. WhatsApp footer button) | Free |
 | Payment gateway | EasyPaisa/JazzCash or Stripe | Free/paid |
 
 ## Codespot Template Customization
