@@ -115,3 +115,15 @@ The homepage was still 100% generic template filler ("Discover All The Powerful 
 - Footer Privacy Policy / Terms & Conditions links still point to `#` (unpublished draft pages) — left as-is, flagged as a separate follow-up since it needs actual legal copy, not a content-pass fix.
 
 Cleared all caches and verified the live page renders the new copy, correct links, and updated footer.
+
+---
+
+## 2026-06-27 (follow-up) — Fixed broken em-dashes and a counter layout overflow
+
+Two issues found after the content rewrite went live:
+
+**1. Literal "u2014"/"u00a0" text appearing on the page.** Root cause: the content-patch script called `json_encode($data)` without `JSON_UNESCAPED_UNICODE`, so every em-dash (—) in the new copy got serialized as the escape sequence `—`. WordPress's `update_post_meta()` runs values through `wp_unslash()` internally, which strips backslashes as if they were SQL-escaping slashes — it doesn't know `—` is JSON syntax, so it ate the backslash and left literal `u2014` text behind. Same root mechanism as the earlier `wp_slash`/`wp_unslash` lessons learned with color values, just triggered this time by JSON's own unicode-escaping colliding with WordPress's slashing layer instead of an explicit `wp_slash()` call.
+
+Before fixing, checked which of the affected fields the user had since edited directly (via the editor) and left those untouched — only patched the 4 fields that still held the original broken text (`dddbf29`, `51511c2`, `814d024`, `53d3747`). Two others (`8c927aa` hero heading, `639ec8d` intro paragraph) had already been rewritten by the user with their own em-dashes — Elementor's own save path escapes correctly, so those were never broken and were left alone. Fixed by re-encoding with `JSON_UNESCAPED_UNICODE` (stores the raw UTF-8 bytes directly, no backslash escape to lose).
+
+**2. Counter section overflow.** The "Built To Help You Launch Faster" stat counters used a `-Day` suffix on top of big numbers (`7-Day`, `14-Day`), which overflowed its column width and wrapped, overlapping the next stat. Fixed by dropping the suffix and moving the unit into the label text instead (`7` / "Days To Launch", `14` / "Days To Grow", `3` / "Pricing Tiers") — same true numbers, just sized to fit.
