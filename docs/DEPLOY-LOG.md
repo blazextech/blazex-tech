@@ -148,3 +148,19 @@ The 8-card features grid (the one with the green hover-color bug fixed earlier i
 Cleared all caches and verified zero corrupted-unicode occurrences and correct content live.
 
 **Follow-up — card height mismatch:** After the user lengthened 6 of the 8 card descriptions by hand (to ~128-140 characters each), the remaining 2 untouched ones ("Fast Turnaround" at 59 chars, "Ongoing Support" at 86 chars) were much shorter, so the grid rendered with uneven card heights. First pass loosely matched the range; user asked for all 8 to be the *same* character count, not just close. Rewrote all 8 descriptions to exactly 128 characters each (iterated locally with a small Python length-checker before pushing to the server) so every card renders at an identical height.
+
+---
+
+## 2026-06-28 — About page: replaced fabricated company history with real content
+
+This page was the worst of the demo leftovers — it was live and publicly claiming "Founded in 2010, Codespot began as..." with a fake 6-person team (Michael Scott as CEO, Sienna Hewitt in HR, etc.), fabricated "Fortune 500 clients" and "500+ Happy Clients" stats, and a fake testimonial attributed to "Alicia Peterson, Co-Founder of MarketingTips.com." None of it was true, and it was published, not just placeholder-looking — worth fixing properly rather than a quick reword.
+
+Got real inputs from the user before drafting: the actual team (7 people — Saif Ullah as Founder & CEO/Lead Web Developer, Emma Reynolds as Co-Founder & Strategy Director, Sara Malik in Digital Marketing, Usman Tariq on Shopify/Ecommerce, Ayesha Noor on Social Media, Bilal Hassan on n8n Automation, Zara Khan on AI Creative & Design) and the real founding motivation (agencies overcharging small businesses for slow, disconnected, unaccountable service across five different vendors; BlazeX built to be one team that takes full responsibility).
+
+**Structural change, not just text:** the team section had exactly 6 fixed card slots in `_elementor_data`, but there are 7 real people. Found the repeating container (`8511e22`, holding 6 child card containers), deep-cloned the last child's full element tree, regenerated a fresh unique Elementor ID for every node in the clone (clashing IDs would corrupt the page), and appended it as a 7th card before filling in Zara Khan's name/role.
+
+**Fake testimonial removed, not just reworded.** Rather than inventing different fake words for a different fake person, repurposed that block into an honest "Ete Clothing — BlazeX's First Case Study" spotlight with no invented quote.
+
+**Stats strip** (previously fake "10+ Years Experience," "500+ Happy Clients," "Fortune 500" claims): replaced with true counts pulled from the business's own facts — 7 Team Members, 6 Core Services, 3 Pricing Tiers, 2026 Founded — same no-fabrication approach used on the Home and Services pages.
+
+Used `JSON_UNESCAPED_UNICODE` throughout. Cleared all caches and verified all 7 real team names are live with zero remaining "Codespot"/fake-team/fake-stat content and zero corrupted-unicode occurrences.
