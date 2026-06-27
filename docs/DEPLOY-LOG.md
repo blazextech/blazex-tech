@@ -72,3 +72,11 @@ Even after the overlay-color fixes, three actual *image* assets from the Codespo
 Recolored using the same selective channel-mask technique as the hero shape (`g > r+5 OR b > r+5` → recolor by brightness toward `#E8570E`, else leave untouched). One image (`services-page-image-4`) initially kept a couple of visible cyan patches near the edges with a `+15` threshold — these were transitional/anti-aliased pixels where the green cast was too subtle to clear the margin. Lowering the threshold to `+5` caught them cleanly with no visible side effects on the white background or highlights.
 
 Uploaded all five (attachment IDs 1219–1223), swapped the exact `url`/`id` pairs in `_elementor_data` for posts 1182 and 1186, cleared the same cache chain, and verified each new filename appears in the regenerated CSS/HTML. Source copies added to [assets/images/](../assets/images/).
+
+**Follow-up — proactive sweep + one more shape, two photo categories deferred:** Checked every remaining unrecolored image referenced across Home/About/Services/Contact. Found one more abstract graphic — `home-about-section-image-2.png`, a blue-to-green soundwave/wave vector on the homepage About section — recolored with the same technique (attachment ID 1224, swapped into post 1182).
+
+The rest of the unchecked images are real *photos*, not renders, split into two categories left **as-is** per user decision rather than auto-edited (photo color-masking is unreliable around skin/hair edges and risks an unnatural result):
+- **Green neon lighting/signage in CTA backgrounds:** `home-cta-background.webp` (woman, green-lit headset/wall sign) and `services-cta-background-3.webp` (man, green neon strip + green-lit "X" logo on a monitor). Revisit later with a proper photo editor or regenerate via ComfyUI if desired.
+- **Green clothing on photo subjects:** `home-hero-image-1.webp`, `services-page-image-2.webp`, `services-page-image-5.webp`, `contact-us-image-2.webp`. Considered low priority — clothing color in a stock photo doesn't compete with the UI palette the way shapes/overlays do.
+
+Total abstract shape/graphic images recolored across this and the prior two entries: 9 (attachment IDs 1216–1224).
