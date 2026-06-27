@@ -1,0 +1,13 @@
+.ct-panel-content[data-device="mobile"] {
+	position: relative;
+}
+.ct-panel-content[data-device="mobile"] .site-logo-container[data-id="offcanvas-logo"] {
+	position: absolute;
+	top: 20px;
+	left: 25px;
+	margin: 0 !important;
+	z-index: 5;
+}
+.ct-panel-content[data-device="mobile"] .ct-panel-content-inner {
+	padding-top: 70px;
+}

@@ -188,3 +188,13 @@ Replaced with real details: phone/WhatsApp `+92 347 3407764`, location "Multan, 
 **"Career Opportunities" section reframed as "Collaborate With Us"** — the original implied formal job openings/hiring, which isn't accurate. Repointed at freelance designers/video editors/developers wanting to collaborate, consistent with the "wider network of collaborators" framing already established on the About page.
 
 All "More Information" buttons across the page now link directly to WhatsApp (`wa.me/923473407764`) instead of going nowhere. Used `JSON_UNESCAPED_UNICODE` throughout. Cleared all caches and verified zero remaining Codespot/fake-contact-info content live.
+
+---
+
+## 2026-06-28 — Mobile off-canvas menu logo position
+
+User had set the off-canvas (hamburger) menu width to 50vw via Blocksy's native customizer option and reported the logo wasn't aligned with the close (X) button — it should sit at the top, parallel to it.
+
+Root cause: Blocksy's off-canvas panel markup splits the close button and the logo into two separate, non-adjacent flex rows — `.ct-panel-actions` (close button, absolutely-flowing top row) and `.ct-panel-content` (logo + nav + social icons, starts as a new block *below* the actions row). Checked `theme_mods_blocksy.header_placements` for a native "offcanvas-logo" builder item — it exists and controls logo height/margin per breakpoint, but there's no option to merge it into the same row as the close button; that's a fixed template structure, not a builder setting.
+
+Fixed with custom CSS (new FluentSnippets snippet, `4-mobile-offcanvas-logo-position.php`, same `load_as_file`/CSS pattern as the border-animation and contact-form snippets): absolutely positions the logo at `top: 20px; left: 25px` so it sits in the same horizontal band as the close button (which has matching ~20px top padding and uses the same 25px `--panel-padding` for its inline padding), then adds `padding-top: 70px` to the content wrapper so the nav menu below doesn't overlap the now-absolutely-positioned logo. Mirrored to `src/theme/mobile-offcanvas-logo.css`.
