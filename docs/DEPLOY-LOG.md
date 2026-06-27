@@ -27,3 +27,13 @@ Record of changes pushed directly to the live blazextech.com site (outside the n
 **Cache:** Same refresh routine as above (Blocksy dynamic-CSS transient + action, WP object cache flush, LiteSpeed purge).
 
 **Incident — settings reverted:** Shortly after, the header logo and button reverted to "Codespot"/"Get in Touch". Root cause: an open WP Customizer browser tab (loaded before these edits) was published, and Blocksy's header builder saves its entire `header_placements` value as one atomic blob — overwriting our nested `header_placements.logo.custom_logo` and `header_placements.button.values` back to their pre-edit state. The top-level `custom_logo` theme_mod survived because it's a separate key written via a different path. Re-applied both values (and synced the nested logo reference to attachment 1197 this time) once the tab was closed without saving. Lesson: avoid leaving the Customizer open while scripting `theme_mods_blocksy` changes via WP-CLI.
+
+---
+
+## 2026-06-27 — Border Animation snippet color
+
+**Change:** The "Border Animation" CSS snippet (FluentSnippets/Easy Code Manager, `type: css`, `run_at: wp_head`, `load_as_file: yes`) had `--border-animation-color: #52fe7d73` (a leftover green from a previous theme), updated to `--border-animation-color: #E8570E73` (Blaze Orange, matching the brand palette). Source kept in [src/theme/border-animation.css](../src/theme/border-animation.css) for version control.
+
+**Note:** Because `load_as_file: yes`, the plugin serves a *compiled* copy from `wp-content/fluent-snippet-storage/cached/1-border-animation.css` via a directly enqueued URL — editing only the source `.php` file's docblock-wrapped code would not have changed what's actually served. Both the source and the cached file were updated in lockstep.
+
+**Cache:** Same refresh routine (Blocksy dynamic-CSS transient + action, WP object cache flush, LiteSpeed purge). Verified live via direct fetch of the cached CSS URL.
