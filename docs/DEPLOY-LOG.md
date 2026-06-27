@@ -96,3 +96,22 @@ User reported three more green spots; each turned out to be a distinct mechanism
 Checked post-card typography (title/meta/category-tag fonts) per the user's request — all of those Blocksy typography slots are set to `"family":"Default"`, meaning they inherit from `rootTypography` (Inter), so no separate fix was needed there.
 
 Cleared the full cache chain (Elementor cache, Blocksy dynamic-CSS, WP object cache, LiteSpeed, FluentSnippets index) and verified all three live.
+
+---
+
+## 2026-06-27 — Homepage content rewrite: replaced all "Codespot" demo copy with real BlazeX content
+
+The homepage was still 100% generic template filler ("Discover All The Powerful Codespot Features", "Turning Complex Code into Powerful Solutions", fabricated stats like "$500K Saved" and "4.9 rating") — none of it referenced BlazeX's actual services. Rewrote every heading, paragraph, and button across the page (61 text fields, 14 button links) by walking `_elementor_data` for post 1182 and patching each element by its Elementor element ID (not string-replace — text content needs exact JSON-safe handling for quotes/apostrophes).
+
+**Deliberately avoided fabricated metrics.** The original had several invented performance stats (revenue saved, client rating, "120% average ROI increase") with no basis — BlazeX doesn't have that track record yet. Replaced the stat/counter widgets with numbers that are actually true and sourced from the business's own documented facts: 6 core services, 3 pricing tiers, 7-day Launch delivery, 14-day Growth delivery — all pulled from the package details already on record, not invented.
+
+**Structure mapped to real services:** Hero → 3 feature highlights (Websites & Stores / AI Automation / AI Creative Content) → case-study callout (links to Ete Clothing on the About page, since no Portfolio page exists yet) → main 5-card services grid (Web Development, Digital Marketing, n8n Automation, Ecommerce Management, AI Creative Content — consolidated Shopify into Web Development/Ecommerce copy since there were 5 card slots for 6 services) → 3-step "How We Work" process → "Why BlazeX" differentiators → WhatsApp-first support section.
+
+**Button links:** All "Get Started"/"Get a Quote" CTAs now point to `/contact/`, "More Information" buttons point to `/services/`. One button was drafted to link to `/packages/`, which doesn't exist yet — caught it before launch and repointed to `/services/`.
+
+**Footer cleanup (found while doing the content pass, not directly requested but in scope as leftover Codespot branding):**
+- Footer logo widget (`widget_block` option, footer sidebar 1) was still hotlinking the demo's own logo from `startersites.io` — replaced with the real BlazeX logo (attachment 1197).
+- Footer "Nevada, 47284 Queenie Drive, Suite 865" — a fake demo address with a hotlinked map-pin icon (also from startersites.io) — removed per explicit decision not to publish a street address, replaced with a "Chat with us on WhatsApp" link instead.
+- Footer Privacy Policy / Terms & Conditions links still point to `#` (unpublished draft pages) — left as-is, flagged as a separate follow-up since it needs actual legal copy, not a content-pass fix.
+
+Cleared all caches and verified the live page renders the new copy, correct links, and updated footer.
