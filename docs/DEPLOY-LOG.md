@@ -170,3 +170,21 @@ Used `JSON_UNESCAPED_UNICODE` throughout. Cleared all caches and verified all 7 
 **Also removed the Ete Clothing case-study spotlight** (added in the previous pass) per the user's instruction not to reference Ete for now — they'll provide feedback from other clients later instead. Reframed that block as a generic "Built On Real Experience" statement with no specific client named. Found and fixed the same Ete mention on the **homepage** mid-page banner for consistency (was "See how BlazeX helped Ete Clothing launch..." with a "See the Case Study" button linking to `/about/`) — genericized the copy and repointed the button to `/contact/` as "Get a Quote" instead.
 
 **Follow-up — duplicate stat numbers.** Each stat card was showing two different numbers stacked on top of each other (e.g. a big "15+" above a smaller "7+"). Root cause: the stats section has a `counter` widget (the big animated number) completely separate from the `heading` widget below it — the stats-revision fix above only touched the heading text (which I'd set to "7+"/"15+"/etc.), not the actual counter widgets, which still held their original fake demo values (`15`, `500`, `120`, blank). Fixed by updating the 4 counter widgets' `ending_number`/`suffix` to the real values, then changed the headings back to plain labels ("Years Experience", "Skilled Professionals", etc.) instead of repeating the number, and trimmed the now-redundant leading label text out of each paragraph.
+
+---
+
+## 2026-06-28 — Contact page content rewrite
+
+Same demo-content problem as every other page, plus this one had fake *contact details* actually being published — not just narrative copy. Found via the page's 4 `icon-box` widgets (a different widget type than the heading/text-editor/button pattern used everywhere else, so it needed its own settings keys: `title_text`/`description_text`):
+- Phone: `+7 (495) 123-45-67` (Russian demo number)
+- Email: `info@codespot.com`
+- Address: the same fake "Nevada, 47284 Queenie Drive Suite 865" already removed from the footer, but here live in an actual contact-info field
+- Hours: "Mon-Fri 09:00 AM – 06:00 PM" — doesn't match the user's real schedule at all
+
+Replaced with real details: phone/WhatsApp `+92 347 3407764`, location "Multan, Pakistan" (no street address, consistent with the earlier footer decision), availability "24/7, message anytime on WhatsApp". Email is `hello@blazextech.com` as a placeholder — the user doesn't have a business email set up yet, so this won't actually receive mail until email hosting/forwarding is configured through Hostinger. Flagged this explicitly rather than publishing a working-looking address that silently bounces.
+
+**Map widget** was pinned to `51.487397, -0.0304748` (central London — not even the fake Nevada address, just an unrelated leftover demo default). Repointed to Multan, Pakistan (`30.1575, 71.5249`).
+
+**"Career Opportunities" section reframed as "Collaborate With Us"** — the original implied formal job openings/hiring, which isn't accurate. Repointed at freelance designers/video editors/developers wanting to collaborate, consistent with the "wider network of collaborators" framing already established on the About page.
+
+All "More Information" buttons across the page now link directly to WhatsApp (`wa.me/923473407764`) instead of going nowhere. Used `JSON_UNESCAPED_UNICODE` throughout. Cleared all caches and verified zero remaining Codespot/fake-contact-info content live.
