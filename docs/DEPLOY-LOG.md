@@ -39,3 +39,15 @@ Record of changes pushed directly to the live blazextech.com site (outside the n
 **Cache:** Same refresh routine (Blocksy dynamic-CSS transient + action, WP object cache flush, LiteSpeed purge). Verified live via direct fetch of the cached CSS URL.
 
 **Follow-up — stale cache-busting version:** The color still showed as green in the browser after the above. Cause: the source/cached files were edited directly with `sed`, bypassing FluentSnippets' own index rebuild — the enqueued `<link>` URL's `?ver=` parameter comes from `strtotime($snippet['updated_at'])` in the plugin's cached index (`wp-content/fluent-snippet-storage/index.php`), not from re-reading the snippet file on each request. Since that index still held the old `updated_at`, the URL was byte-identical to before the edit (`?ver=1764843894`), so any browser that had already loaded it kept serving its own cached copy indefinitely — the new file content on disk was correct, but nothing forced a re-fetch. Fixed by calling `Helper::cacheSnippetIndex('', true)` to rebuild the index from the snippet files' docblocks, which bumped the version to `?ver=1782543432`. Lesson: editing FluentSnippets-managed files directly on disk needs a forced index rebuild afterward, or use the plugin's update path instead of raw file edits.
+
+---
+
+## 2026-06-27 — Sitewide green overlay removal
+
+After the border-animation fix, the whole layout still had a greenish cast. Found two separate, unrelated sources of leftover neon-green from the original Codespot demo import:
+
+**1. `.ct-boxshadow` utility class:** Pre-existing Blocksy Additional CSS (post ID 5, not something this project added) had `box-shadow: 0 -1px 0 0 #52ff7d29, 0 0 0 1px #ffffff1f;`, applied to 22 elements site-wide via the `ct-boxshadow` class. Replaced `#52ff7d29` with `#E8570E29` (brand orange, same alpha) via `wp_update_custom_css_post()`.
+
+**2. Elementor container background gradients:** The real source of the dominant "overlay" look — 17–18 containers per page (Home, About, Services, Contact) had dark green gradient backgrounds (`background_color: #0A2B126B` / `#0530083D` / `#051F063D`, paired with `background_color_b: #0C0C0C` / `#021E045C`) baked directly into each page's `_elementor_data` postmeta. Editing the generated CSS files in `wp-content/uploads/elementor/css/` directly would not have stuck — Elementor regenerates them from postmeta. Instead, patched the JSON in `_elementor_data` for posts 1182, 1184, 1186, 1191, replacing every green hex with the brand's Steel Dark (`#1C2333`) at the *same alpha value* (e.g. `#0A2B126B` → `#1C23336B`), preserving the existing gradient depth/opacity while removing the green hue. Then cleared Elementor's CSS cache (`\Elementor\Plugin::$instance->files_manager->clear_cache()`) to force regeneration from the updated data.
+
+**Cache:** Same full routine (Elementor cache clear, Blocksy dynamic-CSS transient + action, WP object cache flush, LiteSpeed purge). Verified by diffing hex colors in the regenerated `post-*.css` files — zero remaining matches for the old green values across all four pages.
