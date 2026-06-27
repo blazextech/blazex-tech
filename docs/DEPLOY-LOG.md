@@ -127,3 +127,22 @@ Two issues found after the content rewrite went live:
 Before fixing, checked which of the affected fields the user had since edited directly (via the editor) and left those untouched — only patched the 4 fields that still held the original broken text (`dddbf29`, `51511c2`, `814d024`, `53d3747`). Two others (`8c927aa` hero heading, `639ec8d` intro paragraph) had already been rewritten by the user with their own em-dashes — Elementor's own save path escapes correctly, so those were never broken and were left alone. Fixed by re-encoding with `JSON_UNESCAPED_UNICODE` (stores the raw UTF-8 bytes directly, no backslash escape to lose).
 
 **2. Counter section overflow.** The "Built To Help You Launch Faster" stat counters used a `-Day` suffix on top of big numbers (`7-Day`, `14-Day`), which overflowed its column width and wrapped, overlapping the next stat. Fixed by dropping the suffix and moving the unit into the label text instead (`7` / "Days To Launch", `14` / "Days To Grow", `3` / "Pricing Tiers") — same true numbers, just sized to fit.
+
+**Lesson reinforced:** the same stale-editor-clobbers-server-fix issue from earlier in the project hit again here — the user had the Elementor editor open on an older version of the page and saved it (even by accident), which silently reverted both fixes back to the broken state. Had to confirm the editor was closed, re-diff what the user's own manual edits were (so as not to overwrite those), and reapply only the fields that were actually still broken.
+
+---
+
+## 2026-06-27 — Services page content rewrite
+
+Same treatment as the homepage — the Services page (post 1186) was still full of generic "developer agency" demo copy (Programming Solutions, Secure Infrastructure, Core Development Components, etc.) with no mention of any real BlazeX service. Rewrote 68 text fields, 32 icon-list bullet items, and 15 button links by walking `_elementor_data` and patching by element ID, using `JSON_UNESCAPED_UNICODE` on the `json_encode()` call from the start this time (learned from the homepage em-dash bug — avoids the `wp_unslash()` backslash-eating issue entirely).
+
+**Pricing section was the main substantive change.** The existing "Pick Your Plan" section already happened to use `$299`/`$699` for its first two tiers, but framed as fake recurring "/month" SaaS subscriptions with a typo'd `$1.999/month` Enterprise tier — none of which matches the real one-time-fee package structure documented in SKILL.md. Replaced with the actual packages:
+- **Launch** — $299 one-time, 7-day delivery, 9 real inclusions (5-page WordPress site, mobile responsive, contact form, basic SEO, etc. — dropped irrelevant leftover dev-agency bullets like "Version Control" and "CI/CD Pipeline" that don't apply to a WordPress starter site)
+- **Growth** — $699 one-time + optional monthly retainer, 14-day delivery, WooCommerce/Shopify store + Meta Ads setup + social kit + 1 n8n workflow
+- **Custom** — "Contact for Quote" (no fixed price) instead of a fake number, full ecommerce + AI automation + ongoing ad management + retainer
+
+All three plan buttons, plus every other CTA on the page, link to `/contact/` since there's no checkout flow live yet.
+
+The 8-card features grid (the one with the green hover-color bug fixed earlier in the week) is now mapped to the 6 real services plus 2 supporting value props (Fast Turnaround, Ongoing Support) instead of generic SaaS feature names ("Ready for scale", "Ongoing context", etc.).
+
+Cleared all caches and verified zero corrupted-unicode occurrences and correct content live.
