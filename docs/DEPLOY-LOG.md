@@ -80,3 +80,19 @@ The rest of the unchecked images are real *photos*, not renders, split into two 
 - **Green clothing on photo subjects:** `home-hero-image-1.webp`, `services-page-image-2.webp`, `services-page-image-5.webp`, `contact-us-image-2.webp`. Considered low priority — clothing color in a stock photo doesn't compete with the UI palette the way shapes/overlays do.
 
 Total abstract shape/graphic images recolored across this and the prior two entries: 9 (attachment IDs 1216–1224).
+
+---
+
+## 2026-06-27 — Three more green leftovers (form buttons, hover, archive hero) — different root causes each
+
+User reported three more green spots; each turned out to be a distinct mechanism, none of them in the places already covered:
+
+**1. Contact page budget buttons:** FluentForm "list buttons" radio group — unselected options had `background-color: #2a3f2e` (dark green) in the FluentSnippets "Contact Form Design" CSS snippet (`load_as_file: yes`, same pattern as the border-animation snippet). Fixed both the source and cached `.css` to `#1C2333`. Forgot to bump the docblock's `@updated_at` on the first pass, so the cache-busting `?ver=` stayed identical to before the edit and the browser kept serving the cached file — same class of bug as the border-animation incident. Fixed by bumping `@updated_at` and rebuilding the FluentSnippets index a second time (`?ver=1782551012`).
+
+**2. Services page card hover overlay:** The hover background used `var(--e-global-color-accent)` — Elementor's **global kit color**, which was never customized away from Elementor's own stock defaults (`primary:#6EC1E4, secondary:#54595F, text:#7A7A7A, accent:#61CE70`). This is a site-wide Elementor setting (`_elementor_page_settings` on the kit post, ID 1193), completely separate from `theme_mods_blocksy` or any individual page's `_elementor_data` — none of the earlier fixes touched it because nothing had looked at the kit before. Set `system_colors` on the kit to `primary:#E8570E, secondary:#1C2333, text:#2E3A50, accent:#E8570E`.
+
+**3. News page (blog archive) hero background:** Used the original local copy of `bg-test-12-scaled-1.jpg` (attachment 363) directly via Blocksy's native Archive Hero feature (`blog_custom_hero_background` / `categories_custom_hero_background` in `theme_mods_blocksy`) — not Elementor at all, so it was outside every page-data fix done so far. Repointed both settings to the already-uploaded orange version (attachment 1216).
+
+Checked post-card typography (title/meta/category-tag fonts) per the user's request — all of those Blocksy typography slots are set to `"family":"Default"`, meaning they inherit from `rootTypography` (Inter), so no separate fix was needed there.
+
+Cleared the full cache chain (Elementor cache, Blocksy dynamic-CSS, WP object cache, LiteSpeed, FluentSnippets index) and verified all three live.
