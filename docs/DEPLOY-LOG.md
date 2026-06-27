@@ -15,3 +15,13 @@ Record of changes pushed directly to the live blazextech.com site (outside the n
 **WhatsApp sticky button:** Added via the Easy Code Manager plugin (a rebrand of FluentSnippets, already active on the site) rather than editing theme `functions.php` directly — same update-safety reasoning as above. Snippet type `php_content`, hook `wp_footer`, status `published`. Source kept in [src/theme/whatsapp-footer-snippet.php](../src/theme/whatsapp-footer-snippet.php) for version control; the live copy lives in `wp-content/fluent-snippet-storage/3-blazex-whatsapp-sticky-button.php` (not committed — file-based plugin storage, not part of the theme). Links to `https://wa.me/923473407764`.
 
 **Verified live:** `:root`/`h1`-`h4` Inter fonts, Additional CSS rules, and the rendered `.blazex-whatsapp-btn` link all confirmed present in the served HTML/CSS after cache purge.
+
+---
+
+## 2026-06-27 — Site logo and header CTA button
+
+**Logo:** Of the candidate files in `assets/logos/`, only [logo.png](../assets/logos/logo.png) (800×315 RGBA) is an actual flat logo — wordmark + flame icon, transparent background, no watermark. The other JPGs (`logo.jpg`, `square.jpg`, `grok_image_83mjvm.jpg`, `grok_image_ejkql9-1.jpg`) are AI-rendered "on a wall" mockups with a baked-in dark background and a visible Grok watermark; `final file.png` is the flame icon only, with no wordmark, sitting in a mostly-empty canvas. Imported `logo.png` into the media library (attachment ID 1197) and set it via `wp theme mod set custom_logo 1197`, replacing the old placeholder SVG (attachment 681). Verified live: header `<img>` now points at `wp-content/uploads/2026/06/blazex-logo.png`.
+
+**Header CTA button:** Blocksy stores this under `theme_mods_blocksy['header_placements'].sections[].items[id=button].values`. Changed `header_button_text` from "Get in Touch" to "Get a Quote", and set `header_button_link` (previously unset, defaulting to `#`) to `https://blazextech.com/contact/`. Verified live: button renders with the new label and `aria-label`, linking to the Contact page.
+
+**Cache:** Same refresh routine as above (Blocksy dynamic-CSS transient + action, WP object cache flush, LiteSpeed purge).
