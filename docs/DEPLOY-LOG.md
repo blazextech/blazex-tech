@@ -146,3 +146,5 @@ All three plan buttons, plus every other CTA on the page, link to `/contact/` si
 The 8-card features grid (the one with the green hover-color bug fixed earlier in the week) is now mapped to the 6 real services plus 2 supporting value props (Fast Turnaround, Ongoing Support) instead of generic SaaS feature names ("Ready for scale", "Ongoing context", etc.).
 
 Cleared all caches and verified zero corrupted-unicode occurrences and correct content live.
+
+**Follow-up — card height mismatch:** After the user lengthened 6 of the 8 card descriptions by hand (to ~128-140 characters each), the remaining 2 untouched ones ("Fast Turnaround" at 59 chars, "Ongoing Support" at 86 chars) were much shorter, so the grid rendered with uneven card heights. First pass loosely matched the range; user asked for all 8 to be the *same* character count, not just close. Rewrote all 8 descriptions to exactly 128 characters each (iterated locally with a small Python length-checker before pushing to the server) so every card renders at an identical height.
